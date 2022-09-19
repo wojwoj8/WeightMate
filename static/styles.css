@@ -1,0 +1,235 @@
+html, body {
+
+  max-width: 100%;
+}
+
+
+.background{
+  background-image: url("background.png");
+
+
+}
+#myChart{
+  width:100%;
+  max-width:99vw;
+  max-height:70vh;
+
+}
+.above{
+  background: rgba(255, 255, 255, 0.4);
+  /*z-index: 1;
+  padding:2px;
+  padding-bottom:2vw;*/
+}
+.abovemore{
+  background: rgba(255, 255, 255, 0.6);
+}
+.notlogged{
+  padding-top:2vh;
+  padding-right:8vw;
+  /*padding-left:2vw;*/
+}
+#notlog{
+  text-align:left;
+  font-size:120px;
+  line-height:1;
+}
+.smltxt{
+  margin-top:7vh;
+  padding-right:11vw;
+  padding-left:11vw;
+}
+.logcont{
+  text-align: justify;
+  position:relative;
+  text-align:center;
+  width: 90vw;
+}
+.signlog{
+  padding-top:3vw;
+  padding-left:10vw;
+  text-align:center;
+  width: 50vw;
+  height: 5vh;
+  animation: cssAnimation 0s 3s forwards;
+  visibility: hidden;
+}
+#w{
+  margin-top:-0.2em;
+  font-size:21vw;
+  animation: right_to_left 3s ease;
+}
+#m{
+
+  float:right;
+  font-size:16vw;
+  animation: left_to_right 2.5s ease;
+}
+.logreg{
+  padding-top:15vh;
+  text-align:center;
+
+}
+#signbut{
+  padding: 1.2vh 5.5vw;
+  color:#19f58b;
+  font-size:2vw;
+}
+#str{
+  font-size:5vw;
+}
+#center{
+
+}
+/*.text{
+border:1px solid black;
+border-radius: 25px;
+}*/
+.error {
+    color:#ff0000;
+    text-align:center;
+    padding-top:2vh;
+    }
+.authstyle{
+
+}
+.getstarted{
+    text-align:center;
+
+}
+#addemas{
+  margin:0;
+}
+.startform{
+    padding-top:2vh;
+    margin:auto;
+    width:90vw;
+}
+
+.left{
+  float:left;
+  width:44vw;
+}
+.right{
+  float:right;
+  width:44vw;
+}
+#h1{
+  font-size:5.5vw;
+}
+#h2{
+  font-size:4.5vw;
+}
+#profbut{
+  margin-top:15vh;
+  width:60%;
+}
+#butfont{
+  font-size:1.5vw;
+}
+
+
+@keyframes right_to_left {
+  from {
+    margin-left: 100%;
+  }
+  to {
+    margin-left: 0%;
+  }
+}
+
+@keyframes left_to_right {
+  from {
+    margin-right: 100%;
+  }
+  to {
+    margin-right: 0%;
+  }
+}
+@keyframes cssAnimation {
+  to   { visibility: visible; }
+}
+@media only screen and (max-width:820px){
+  .logcont{
+    padding-top:5vh;
+  }
+  .signlog{
+    width:90vw;
+    padding-top:30vw;
+  }
+  #signbut{
+    padding: 1vh 6vw;
+    color:#19f58b;
+    font-size:8vw;
+  }
+  #str{
+    font-size:10vw;
+  }
+  .startform{
+    padding-top:2vw;
+    margin:1vw;
+    width:98vw;
+}
+    #profbut{
+      margin-top:15vh;
+      width:90%;
+    }
+    #butfont{
+      font-size:2.5vw;
+    }
+    #h1{
+      font-size:7.5vw;
+    }
+    #h2{
+      font-size:6.5vw;
+    }
+    #admes{
+      margin-top:4vw
+    }
+    .tablebug{
+      width:820px;
+      max-width:820px;
+
+    }
+}
+
+
+@media only screen and (max-width:1120px) and (min-width:801px){
+  .logcont{
+    padding-top:3vh;
+  }
+  .signlog{
+    width:90vw;
+    position:relative;
+    padding-top:29vh;
+  }
+  #signbut{
+    padding: 1vh 3vw;
+    color:#19f58b;
+    font-size:4vw;
+  }
+  #str{
+    font-size:6vw;
+  }
+  .startform{
+    padding-top:2vw;
+    width:95vw;
+}
+  #profbut{
+    margin-top:15vh;
+    width:90%;
+  }
+  #butfont{
+    font-size:2.5vw;
+  }
+  #h1{
+    font-size:7.5vw;
+  }
+  #h2{
+    font-size:6.5vw;
+  }
+  #admes{
+    margin-top:4vw
+  }
+}
+

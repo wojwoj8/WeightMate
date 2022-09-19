@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block main %}
+<div class="profile" style="text-align:center;">
+    <h1>Here is your data.</h1>
+    <h2>If you want to change something, just change the contents of the field.</h2>
+</div>
+    <form name="bmr" class="startform" method="post">
+        <b><p style="color:#ff0000;">{{error}}</p></b>
+        <div class="input-group flex-nowrap">
+            <span class="input-group-text" id="addon-wrapping">Username</span>
+            <input value="{{data[0]["username"]}}" type="text" id="username" name="username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
+        </div>
+        <br>
+        <div class="input-group flex-nowrap">
+            <span class="input-group-text" id="addon-wrapping">Password</span>
+            <input type="password" id="password" name="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div id="passwordHelpBlock" class="form-text">
+            If you do not want to change your password, skip this field.
+        </div>
+        <div class="input-group flex-nowrap">
+            <span class="input-group-text" id="addon-wrapping">Confirm Password</span>
+            <input type="password" id="confirmation" name="confirmation" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div id="passwordHelpBlock" class="form-text">
+            If you do not want to change your password, skip this field.
+        </div>
+        <div class="input-group flex-nowrap">
+            <span class="input-group-text" id="addon-wrapping">Age</span>
+            <input value="{{data[0]["age"]}}" type="text" id="age" name="age" class="form-control" placeholder="Age" aria-label="Age" aria-describedby="addon-wrapping">
+        </div>
+        <br>
+        <div class="input-group flex-nowrap">
+            <span class="input-group-text" id="addon-wrapping">Height[cm]</span>
+            <input value="{{data[0]["height"]}}" type="text" id="height" name="height" class="form-control" placeholder="Height" aria-label="Height" aria-describedby="addon-wrapping">
+        </div>
+        <br>
+        <div class="input-group flex-nowrap">
+        <span class="input-group-text" id="addon-wrapping">Gender</span>
+        <select name="gender", id="gender" class="form-select" id="inputGroupSelect01" required>
+            <option selected value="{{data[0]["gender"]}}" hidden>{{data[0]["gender"]}}</option>
+              {% for gen in gender %}
+                  <option value="{{ gen }}">{{ gen }}</option>
+              {% endfor %}
+          </select>
+        </div>
+        <br>
+        <div style="text-align:center;">
+            <button class="btn btn-outline-dark submit " type="submit" style="background-color:#121212; color:white; width:40vw; margin-top:10vh;">Modify</button>
+        </div>
+    </form>
+{% endblock %}

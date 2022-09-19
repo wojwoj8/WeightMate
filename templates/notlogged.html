@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    WeightMate
+{% endblock %}
+
+
+{% block main %}
+{% if session["user_id"] == null%}
+    <div class="logcont">
+        <h1 id="w" class="fw-bold">Weight</h1>
+        <h1 id="m" class="fw-bold">Mate</h1>
+        <div class="signlog">
+            <b><p id="str">Start today &#128170;</p></b>
+
+                <a href="/register" class="btn btn-dark" role="button" id="signbut">Sign up</a>
+
+        </div>
+    </div>
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    WeightMate
+{% endblock %}
+
+{% block main %}
+    <div class="getstarted" id="addmeas">
+        <h1>Add your actual weight and optional measurements</h1>
+        <form name="measure" class="startform" method="post">
+            <b><p style="color:#ff0000;">{{error}}</p></b>
+        <div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon2">Bodyweight [kg]</span>
+                <input value="{{x[0]["weight"]}}" type="number" id="weight" name="weight" class="form-control" aria-label="Text input with dropdown button" placeholder="Weight (20-800)" step="0.1" min="20" max="800" step="0.1" required>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon2">Date [YYYY-MM-DD]</span>
+                <input value="{{date}}" type="text" id="date" name="date" class="form-control" aria-label="Text input with dropdown button" placeholder="YYYY-MM-DD" required>
+            </div>
+            <br>
+        <div>
+            <div class = left>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">Neck</span>
+                    <input value={{x[0]["neck"]}} type="number" id="neck" name="neck" class="form-control" aria-label="Text input with dropdown button" placeholder="Neck [cm]" step="0.1" min="10" max="300" step="0.1">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">Chest</span>
+                    <input value={{x[0]["chest"]}} type="number" id="chest" name="chest" class="form-control" aria-label="Text input with dropdown button" placeholder="Chest [cm]" step="0.1" min="10" max="300" step="0.1" >
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">Left arm</span>
+                    <input value={{x[0]["left_arm"]}} type="number" id="left_arm" name="left_arm" class="form-control" aria-label="Text input with dropdown button" placeholder="Left arm [cm]" step="0.1" min="10" max="300" step="0.1" >
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">Right arm</span>
+                    <input value={{x[0]["right_arm"]}} type="number" id="right_arm" name="right_arm" class="form-control" aria-label="Text input with dropdown button" placeholder="Right arm [cm]" step="0.1" min="10" max="300" step="0.1" >
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">Waist</span>
+                    <input value={{x[0]["waist"]}} type="number" id="waist" name="waist" class="form-control" aria-label="Text input with dropdown button" placeholder="Waist [cm]" step="0.1" min="10" max="300" step="0.1" >
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">Abdomen</span>
+                    <input value={{x[0]["abdomen"]}} type="number" id="abdomen" name="abdomen" class="form-control" aria-label="Text input with dropdown button" placeholder="Abdomen [cm]" step="0.1" min="10" max="300" step="0.1" >
+                </div>
+            </div>
+            <div class="right">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">Hips</span>
+                    <input value={{x[0]["hips"]}} type="number" id="hips" name="hips" class="form-control" aria-label="Text input with dropdown button" placeholder="Hips [cm]" step="0.1" min="10" max="300" step="0.1" >
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">Left thigh</span>
+                    <input value={{x[0]["left_thigh"]}} type="number" id="left_thigh" name="left_thigh" class="form-control" aria-label="Text input with dropdown button" placeholder="Left thigh [cm]" step="0.1" min="10" max="300" step="0.1" >
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">Right thigh</span>
+                    <input value={{x[0]["right_thigh"]}} type="number" id="right_thigh" name="right_thigh" class="form-control" aria-label="Text input with dropdown button" placeholder="Right thigh [cm]" step="0.1" min="10" max="300" step="0.1" >
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">Left calf</span>
+                    <input value={{x[0]["left_calf"]}} type="number" id="left_calf" name="left_calf" class="form-control" aria-label="Text input with dropdown button" placeholder="Left calf [cm]" step="0.1" min="10" max="300" step="0.1" >
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">Right calf</span>
+                    <input value={{x[0]["right_calf"]}} type="number" id="right_calf" name="right_calf" class="form-control" aria-label="Text input with dropdown button" placeholder="Right calf [cm]" step="0.1" min="10" max="300" step="0.1" >
+                </div>
+            </div>
+                <br>
+                <br>
+
+                </div>
+            </div>
+                <div style="text-align:center; margin-top:40vh">
+                    <button class="btn btn-outline-dark submit " type="submit" style="background-color:#121212; color:white; width:20vw;">Add</button>
+               </div>
+
+        </form>
+
+
+{% endblock %}

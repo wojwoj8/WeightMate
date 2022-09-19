@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log in
+{% endblock %}
+
+{% block main %}
+
+<script src="{{ url_for('static', filename='js/validate.js') }}"></script>
+    {% if x == 1 %}
+            <b><p class="error">Invalid username or password</p></b>
+        {% endif %}
+<div class="logreg">
+    <h1>Measure, adjust, become better📏</h1>
+    <form action="/login" method="post" name="registerform" onsubmit = "return validateForm()">
+
+        <p class="error"></p>
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto authstyle" id="username" name="username" placeholder="Username" type="text">
+            </div>
+
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto authstyle" id="password" name="password" placeholder="Password" type="password">
+            <br>
+            <button class="btn btn-dark" type="submit" id="center">Log in</button>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

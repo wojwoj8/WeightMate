@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    WeightMate
+{% endblock %}
+
+{% block main %}
+<div style="text-align:center;">
+    <p>{{msg}}</p>
+    {% if calories != tdee %}
+        <h1>Hello {{uname}}, if you eat <span style="color:#ff0000;">{{calories}}</span> kcal per day, you will achive <span style="color:#ff0000;">{{goal}}kg</span> at <span style="color:#ff0000;">{{end_date}}</span> 🔥</h1>
+    {% else %}
+        <h1>To maintain your weight you should eat {{calories}} kcal per day</h1>
+    {% endif %}
+        <h1>Your progress 💪</h1>
+</div>
+    <!-- bar chart canvas element -->
+
+
+    <div class="above">
+        <canvas id="myChart"></canvas>
+    </div>
+    <script>
+    var labels = [{% for label in labels %}
+    "{{label}}",
+    {% endfor %}];
+
+  const data = {
+    labels: labels,
+    datasets: [{
+      label: 'Weight',
+      backgroundColor: 'rgb(0, 240, 132)',
+      borderColor: 'rgb(0, 240, 132)',
+      data: [{% for value in values %}
+    "{{value}}",
+    {% endfor %}],
+    }]
+  };
+
+  const config = {
+    type: 'line',
+    data: data,
+    options: {plugins: {
+         legend: {
+            display: false}}}
+  };
+
+  const myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+</script>
+<div style="text-align:center;" id="admes">
+  <a href="/addmeas" class="btn btn-dark" role="button" id="center" style="width:20vw;">Add</a>
+</div>
+{% endblock %}

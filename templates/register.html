@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sign up
+{% endblock %}
+
+{% block main %}
+<script src="{{ url_for('static', filename='js/validate.js') }}"></script>
+{% if uname != null %}
+    <b><p class="error">This username already exists</p></b>
+{% endif %}
+<div class="logreg">
+    <h1>Start tracking your progress and sign up 🥦</h1>
+    <form action="/register" method="post" name="registerform" onsubmit = "return validateForm()">
+        <p class="error"></p>
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto authstyle" id="username" name="username" placeholder="Username" type="text">
+            </div>
+
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto authstyle" id="password" name="password" placeholder="Password" type="password">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto authstyle" id="confirmation" name="confirmation" placeholder="Password (again)" type="password">
+        </div>
+        <button class="btn btn-dark" type="submit" >Sign up</button>
+    </form>
+</div>
+
+{% endblock %}

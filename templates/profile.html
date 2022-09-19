@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block main %}
+<div class="profile" style="text-align:center;">
+    <p>{{msg}}</p>
+    <h1 id="h1">Hello {{x}}!</h1>
+    <h2 id="h2">What do you want to do?</h2>
+</div>
+    <div class="d-grid gap-2 mx-auto" id="profbut">
+        <a href="/modprof" class="btn btn-dark" role="button" id="butfont">Modify your profile</a>
+        <a href="/checkdata" class="btn btn-dark" role="button" id="butfont">Check all your measurements</a>
+        <a href="/changoal" class="btn btn-dark" role="button" id="butfont">Change your goal</a>
+    </div>
+{% endblock %}
