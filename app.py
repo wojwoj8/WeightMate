@@ -12,6 +12,7 @@ app = Flask(__name__)
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+# app.run(debug=True)
 Session(app)
 #user database
 udb = SQL("sqlite:///users.db")
@@ -493,3 +494,41 @@ def changoal():
             udb.execute("UPDATE users SET goal = ?, rate = ?, activity = ? WHERE id = ?", goal, rate, sport, session["user_id"])
             flash("Goal changed successfully")
             return redirect("/profile")
+
+@app.route("/food", methods=["GET", "POST"])
+@login_required
+@startform_required
+def food():
+    if request.method == "GET":
+        return render_template("food.html")
+
+@app.route("/foodadd", methods=["GET", "POST"])
+@login_required
+@startform_required
+def foodadd():
+    if request.method == "GET":
+        return render_template("foodadd.html")
+    else:
+        print(request.form)
+        food_name = request.form.get("food_name")
+        fats = request.form.get("fats")
+        proteins = request.form.get("proteins")
+        carbohydrates = request.form.get("carbohydrates")
+        food_weight = request.form.get("food_weight")
+        kcal = request.form.get("kcal")
+
+        
+        fats = int(fats)
+        proteins = int(proteins)
+        carbohydrates = int(carbohydrates)
+        food_weight = int(food_weight)
+        kcal = int(kcal)
+        
+        
+        if kcal == " ":
+            kcal = fats * 9 +  carbohydrates * 4 + proteins * 4
+
+        udb.execute("INSERT INTO food (name, fats, proteins, carbohydrates, food_weight, kcal, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+        food_name, fats, proteins, carbohydrates, food_weight, kcal, session["user_id"])
+
+        return redirect("/food")

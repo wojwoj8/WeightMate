@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Food
+{% endblock %}
+
+{% block main %}
+<div class="getstarted">
+    <br>
+      <h1>Add Food to database. 👌</h1>
+      <form name="add_food" class="startform" method="post">
+        <b><p style="color:#ff0000;">{{error}}</p></b>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Name</span>
+            <input type="text" id="food_name" name="food_name" class="form-control" placeholder="Food name" aria-label="Name" aria-describedby="basic-addon1" required>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">Fats</span>
+            <input type="number" id="fats" name="fats" class="form-control" placeholder="Fats in food" aria-label="Fats" aria-describedby="basic-addon1" required>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2">Proteins</span>
+            <input type="number" id="proteins" name="proteins" class="form-control" aria-label="Proteins in food" placeholder="Proteins" required>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2">Carbohydrates</span>
+            <input type="number" id="carbohydrates" name="carbohydrates" class="form-control" aria-label="Carbonhydrates in food" placeholder="Carbonhdrates" required>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2">Food weight [g]</span>
+            <input type="number" id="food_weight" name="food_weight" class="form-control" aria-label="Weight of food in grams" placeholder="Weight of food in grams" required>
+          </div>
+
+          <div>
+            <h2 class="total_calories">Total calories: </h2>
+            <input type="hidden" id="kcal" name="kcal" value="" required>
+          </div>
+
+          <button class="btn btn-outline-dark submit" type="submit" style="background-color:#121212; color:white;">Add</button>
+        </form>
+      </div>
+  </div>
+  <script src="../static/js/addFoodCalcualtor.js"></script>
+{% endblock %}
