@@ -499,8 +499,17 @@ def changoal():
 @login_required
 @startform_required
 def food():
-    if request.method == "GET":
-        return render_template("food.html")
+    if request.method == "POST":
+        search_query = request.form.get("query")
+        print(search_query)
+        if search_query:
+            search_results = udb.execute("SELECT * FROM food WHERE name LIKE ?", "%" + search_query + "%")
+        if len(search_results) == 0:
+            mess = 1
+            return render_template("food.html", mess=mess)
+        return render_template("food.html", search_results=search_results)
+
+    return render_template("food.html")
 
 @app.route("/foodadd", methods=["GET", "POST"])
 @login_required
