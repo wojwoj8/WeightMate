@@ -529,6 +529,9 @@ def foodadd():
         food_weight = request.form.get("food_weight")
         kcal = request.form.get("kcal")
 
+        if not food_name or not fats or not proteins or not carbonhydrates or not food_weight:
+            flash("All fields are required")
+            return redirect("/foodadd")
         
         fats = int(fats)
         proteins = int(proteins)
