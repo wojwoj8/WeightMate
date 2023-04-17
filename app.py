@@ -531,8 +531,8 @@ def food():
 @premium_required
 def foodadd():
     if request.method == "GET":
-        if session["premium"] == 1:
-            return redirect("/food")
+        # if session["premium"] == 1:
+        #     return redirect("/foodadd")
         return render_template("foodadd.html")
     else:
         print(request.form)
