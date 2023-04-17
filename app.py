@@ -2,10 +2,16 @@ from flask import Flask, render_template, redirect, request, session, flash
 from cs50 import SQL
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_session import Session
-from addfunc import login_required, startform_required
+from addfunc import login_required, startform_required, premium_required
+
+from paypalrestsdk import configure, Payment
 
 from datetime import datetime, timedelta
 
+# configure({
+#   "mode": "sandbox", # sandbox or live
+#   "client_id": "EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM",
+#   "client_secret": "EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM" })
 
 app = Flask(__name__)
 
@@ -139,6 +145,7 @@ def register():
         id = udb.execute("SELECT id FROM users WHERE (username = ?)", uname)
         session["user_age"] = None
         session["user_id"] = id[0]["id"]
+        session["premium"] = id[0]["premium"]
         return redirect("/")
 
     else:
@@ -165,6 +172,7 @@ def login():
         #id of logged user
         session["user_id"] = rows[0]["id"]
         session["age"] = rows[0]["age"]
+        session["premium"] = rows[0]["premium"]
 
         return redirect("/")
     else:
@@ -406,7 +414,7 @@ def modprof():
             error = "Age must be in range 10 - 110"
             return render_template("modprof.html", data=data, gender=gender, error=error)
         age = int(age)
-
+        session["age"] = age
         if not height or int(height) not in range(50,300):
             error = "Hight must be in range 50 - 300"
             return render_template("modprof.html", data=data, gender=gender, error=error)
@@ -498,7 +506,9 @@ def changoal():
 @app.route("/food", methods=["GET", "POST"])
 @login_required
 @startform_required
+@premium_required
 def food():
+    print(session)
     if request.method == "POST":
         search_query = request.form.get("query")
         print(search_query)
@@ -509,6 +519,7 @@ def food():
                 return render_template("food.html", mess=mess)
         else:
             mess = 1
+            
             return render_template("food.html", mess=mess)
         return render_template("food.html", search_results=search_results)
 
@@ -517,8 +528,11 @@ def food():
 @app.route("/foodadd", methods=["GET", "POST"])
 @login_required
 @startform_required
+@premium_required
 def foodadd():
     if request.method == "GET":
+        if session["premium"] == 1:
+            return redirect("/food")
         return render_template("foodadd.html")
     else:
         print(request.form)
@@ -547,3 +561,26 @@ def foodadd():
         food_name, fats, proteins, carbohydrates, food_weight, kcal, session["user_id"])
 
         return redirect("/food")
+
+@app.route("/premium", methods=["GET", "POST"])
+@login_required
+@startform_required
+def premium():
+    if request.method == "GET":
+        if session["premium"] == 1:
+            return redirect("/food")
+    return render_template("premium.html")
+
+@app.route('/update_payment', methods=['POST'])
+def update_payment():
+    # Otrzymaj informacje o płatności z przycisku PayPal
+    order_id = request.json['orderID']
+    payer_id = request.json['payerID']
+
+    print(order_id)
+    print(payer_id)
+    # Zaktualizuj wpis dotyczący użytkownika w bazie danych
+    # ...
+    session["premium"] = 1
+    udb.execute("UPDATE users SET premium = 1 WHERE id = ?", session["user_id"])
+    return redirect("/")

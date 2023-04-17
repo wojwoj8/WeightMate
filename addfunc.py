@@ -18,3 +18,11 @@ def startform_required(f):
             return redirect("/getstarted")
         return f(*args, **kwargs)
     return decorated_function
+
+def premium_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") != None and session.get("premium") != 1:
+            return redirect("/premium")
+        return f(*args, **kwargs)
+    return decorated_function
