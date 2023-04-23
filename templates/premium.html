@@ -6,15 +6,26 @@
 
 {% block main %}
 
+<div class="premium">
+  <br>
+  <h2 class="prem">Want use new funtions? Use our Food database? Buy premium now. Today only for 20$</h2>
+</div>
+<div class="paypal">
         <script src="https://www.paypal.com/sdk/js?client-id=AYxCMsYx84WYQnHipFCA18N0W0wyC0Q_l7M5HRkMHvp7SxC9qucgxYIzAJjfz0OVMANpyn0xurGccYe8&currency=USD"></script>
 
         <div id="paypal-button-container"></div>
 
         <script>
           paypal.Buttons({
+            style: {
+    layout: 'horizontal',
+    color:  'gold',
+    shape:  'rect',
+    label:  'paypal'
+  },
             createOrder: function(data, actions) {
 
-              var price = 10;
+              var price = 20;
               var currency = 'USD';
         
 
@@ -50,5 +61,7 @@
                 });
             }
           }).render('#paypal-button-container');
+          
         </script>
+        </div>
 {% endblock %}

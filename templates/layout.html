@@ -32,8 +32,12 @@
                     {% if session["user_id"] %}
                     <ul class="navbar-nav" style="margin-top:0.25rem;">
                     <li><a class="nav-link active" href="/profile">Profile</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="/checkdata">Measurements</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="/food">Food</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/checkdata">Measurements</a></li> 
+                    {% if session["premium"] == 1 %}
+                        <li class="nav-item"><a class="nav-link active" href="/food">Food</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link active" href="/premium">Buy premium</a></li>
+                    {% endif %}
                     <li class="nav-item dropdown">
                     </ul>
                     <ul class="navbar-nav ms-auto" style="margin-top:0.3rem;">

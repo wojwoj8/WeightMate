@@ -233,3 +233,10 @@ border-radius: 25px;
   }
 }
 
+.premium{
+  text-align: center;
+}
+#paypal-button-container{
+  display: flex;
+  justify-content: center;
+}

@@ -655,14 +655,13 @@ def premium():
 
 @app.route('/update_payment', methods=['POST'])
 def update_payment():
-    # Otrzymaj informacje o płatności z przycisku PayPal
+
     order_id = request.json['orderID']
     payer_id = request.json['payerID']
 
     print(order_id)
     print(payer_id)
-    # Zaktualizuj wpis dotyczący użytkownika w bazie danych
-    # ...
+
     session["premium"] = 1
     udb.execute("UPDATE users SET premium = 1 WHERE id = ?", session["user_id"])
     return redirect("/")
