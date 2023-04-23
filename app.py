@@ -48,7 +48,7 @@ udb = SQL("sqlite:///users.db")
 @app.route("/login_google")
 def login_google():
     if session.get("user_id") is not None:
-
+        print('test')
         return redirect("/")
     authorization_url, state = flow.authorization_url()
     session["state"] = state
@@ -90,12 +90,13 @@ def callback():
     else:
         user_id = udb.execute("SELECT id FROM users WHERE (username = ?)", session["email"])
         user_age = udb.execute("SELECT age FROM users WHERE (username = ?)", session["email"])
+        
         session["age"] = user_age[0]["age"]
+    prem = udb.execute("SELECT premium FROM users WHERE (username = ?)", session["email"])
+    session["premium"] = prem[0]["premium"]
     session["user_id"] = user_id[0]["id"]
+        
     
-    
-
-
     return redirect("/")
 
 @app.route("/")
@@ -103,6 +104,7 @@ def callback():
 @startform_required
 def index():
 
+    print(session)
     weight = udb.execute("SELECT weight FROM measurements WHERE user_id = ?", session["user_id"])
     data = udb.execute("SELECT weight,date FROM measurements WHERE user_id = ?", session["user_id"])
     data2 = udb.execute("SELECT goal,rate,bmr,tdee,height,age,gender,activity,username FROM users WHERE id = ?", session["user_id"])
@@ -645,6 +647,7 @@ def foodadd():
 @login_required
 @startform_required
 def premium():
+    print(session)
     if request.method == "GET":
         if session["premium"] == 1:
             return redirect("/food")
