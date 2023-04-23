@@ -1,6 +1,7 @@
 from flask import redirect, render_template, request, session
 from functools import wraps
-
+import secrets
+import string
 
 #Ensures that user is logged, otherwise redirect to login page
 def login_required(f):
@@ -26,3 +27,10 @@ def premium_required(f):
             return redirect("/premium")
         return f(*args, **kwargs)
     return decorated_function
+
+def password_gen():
+    alphabet = string.ascii_letters + string.digits
+    password_length = 12
+    password = ''.join(secrets.choice(alphabet) for i in range(password_length))
+    
+    return(password)

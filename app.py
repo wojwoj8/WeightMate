@@ -1,12 +1,34 @@
-from flask import Flask, render_template, redirect, request, session, flash
+from flask import Flask, render_template, redirect, request, session, flash, abort
 from cs50 import SQL
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_session import Session
-from addfunc import login_required, startform_required, premium_required
+from addfunc import login_required, startform_required, premium_required, password_gen
 
 from paypalrestsdk import configure, Payment
 
 from datetime import datetime, timedelta
+
+import os
+import pathlib
+
+import requests
+from google.oauth2 import id_token
+from google_auth_oauthlib.flow import Flow
+from pip._vendor import cachecontrol
+import google.auth.transport.requests
+
+# ----------------------|google login config|---------------------- 
+os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1" # wyłącza kożystanie z https
+
+GOOGLE_CLIENT_ID = "66996249863-b58mhavhlclpprmu5lga1qj6qdt6g8fd.apps.googleusercontent.com"
+client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
+
+flow = Flow.from_client_secrets_file(
+    client_secrets_file=client_secrets_file,
+    scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
+    redirect_uri="http://127.0.0.1:5000/callback"
+)
+# ------------------------------------------------------------------
 
 # configure({
 #   "mode": "sandbox", # sandbox or live
@@ -23,6 +45,58 @@ Session(app)
 #user database
 udb = SQL("sqlite:///users.db")
 
+@app.route("/login_google")
+def login_google():
+    if session.get("user_id") is not None:
+
+        return redirect("/")
+    authorization_url, state = flow.authorization_url()
+    session["state"] = state
+    return redirect(authorization_url)
+
+@app.route("/callback")
+def callback():
+    
+    if session.get("user_id") is not None:
+        return redirect("/")
+    
+    flow.fetch_token(authorization_response=request.url)
+
+    if not session["state"] == request.args["state"]:
+        abort(500)  # State does not match!
+
+    credentials = flow.credentials
+    request_session = requests.session()
+    cached_session = cachecontrol.CacheControl(request_session)
+    token_request = google.auth.transport.requests.Request(session=cached_session)
+
+    id_info = id_token.verify_oauth2_token(
+        id_token=credentials._id_token,
+        request=token_request,
+        audience=GOOGLE_CLIENT_ID,
+        # clock_skew_in_seconds= 100
+    )
+
+    # session["google_id"] = id_info.get("sub")
+    # session["name"] = id_info.get("name")
+    password_hash = generate_password_hash(password_gen())
+    session["email"] = id_info.get("email")
+
+    user_id = udb.execute("SELECT id FROM users WHERE (username = ?)", session["email"])
+
+    if not user_id:
+        udb.execute("INSERT INTO users (username, hash) VALUES (?, ?)", session["email"], password_hash)
+        user_id = udb.execute("SELECT id FROM users WHERE (username = ?)", session["email"])
+    else:
+        user_id = udb.execute("SELECT id FROM users WHERE (username = ?)", session["email"])
+        user_age = udb.execute("SELECT age FROM users WHERE (username = ?)", session["email"])
+        session["age"] = user_age[0]["age"]
+    session["user_id"] = user_id[0]["id"]
+    
+    
+
+
+    return redirect("/")
 
 @app.route("/")
 @login_required
@@ -143,9 +217,13 @@ def register():
         hpw = generate_password_hash(request.form.get("password"))
         udb.execute("INSERT INTO users (username, hash) VALUES (?, ?)", uname, hpw)
         id = udb.execute("SELECT id FROM users WHERE (username = ?)", uname)
+        prem = udb.execute("SELECT premium FROM users WHERE (username = ?)", uname)
         session["user_age"] = None
+        session["email"] = None
         session["user_id"] = id[0]["id"]
-        session["premium"] = id[0]["premium"]
+        print(id)
+        session["premium"] = prem[0]["premium"]
+        print(session)
         return redirect("/")
 
     else:
@@ -172,6 +250,7 @@ def login():
         #id of logged user
         session["user_id"] = rows[0]["id"]
         session["age"] = rows[0]["age"]
+        session["email"] = None
         session["premium"] = rows[0]["premium"]
 
         return redirect("/")
