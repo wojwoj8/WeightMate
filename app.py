@@ -74,25 +74,27 @@ def callback():
         id_token=credentials._id_token,
         request=token_request,
         audience=GOOGLE_CLIENT_ID,
-        # clock_skew_in_seconds= 100
+        clock_skew_in_seconds= 100
     )
 
     # session["google_id"] = id_info.get("sub")
     # session["name"] = id_info.get("name")
     password_hash = generate_password_hash(password_gen())
     session["email"] = id_info.get("email")
+    user_name = id_info.get("name")
 
-    user_id = udb.execute("SELECT id FROM users WHERE (username = ?)", session["email"])
+    user_id = udb.execute("SELECT id FROM users WHERE (email = ?)", session["email"])
 
     if not user_id:
-        udb.execute("INSERT INTO users (username, hash) VALUES (?, ?)", session["email"], password_hash)
-        user_id = udb.execute("SELECT id FROM users WHERE (username = ?)", session["email"])
+        udb.execute("INSERT INTO users (username, hash, email) VALUES (?, ?, ?)", user_name, password_hash, session["email"])
+        user_id = udb.execute("SELECT id FROM users WHERE (email = ?)", session["email"])
     else:
-        user_id = udb.execute("SELECT id FROM users WHERE (username = ?)", session["email"])
-        user_age = udb.execute("SELECT age FROM users WHERE (username = ?)", session["email"])
+        user_id = udb.execute("SELECT id FROM users WHERE (email = ?)", session["email"])
+        user_age = udb.execute("SELECT age FROM users WHERE (email = ?)", session["email"])
         
         session["age"] = user_age[0]["age"]
-    prem = udb.execute("SELECT premium FROM users WHERE (username = ?)", session["email"])
+    prem = udb.execute("SELECT premium FROM users WHERE (email = ?)", session["email"])
+    print(prem)
     session["premium"] = prem[0]["premium"]
     session["user_id"] = user_id[0]["id"]
         
