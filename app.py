@@ -86,6 +86,7 @@ def callback():
     # session["name"] = id_info.get("name")
     password_hash = generate_password_hash(password_gen())
     session["email"] = id_info.get("email")
+    user_name = id_info.get("name")
 
     user_id = udb.execute(
         "SELECT id FROM users WHERE (username = ?)", session["email"])
