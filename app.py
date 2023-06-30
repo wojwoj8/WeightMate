@@ -18,7 +18,7 @@ from pip._vendor import cachecontrol
 import google.auth.transport.requests
 
 # ----------------------|google login config|----------------------
-os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # wyłącza kożystanie z https
+os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # wyłącza korzystanie z https
 
 GOOGLE_CLIENT_ID = "66996249863-b58mhavhlclpprmu5lga1qj6qdt6g8fd.apps.googleusercontent.com"
 client_secrets_file = os.path.join(
@@ -703,3 +703,6 @@ def update_payment():
     udb.execute("UPDATE users SET premium = 1 WHERE id = ?",
                 session["user_id"])
     return redirect("/")
+
+if __name__ == "__main__":
+    app.run(debug=True)
