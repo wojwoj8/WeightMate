@@ -28,7 +28,8 @@ flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
     scopes=["https://www.googleapis.com/auth/userinfo.profile",
             "https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="https://weightmate.onrender.com"
+    # redirect_uri="https://weightmate.onrender.com"
+    redirect_uri="https://weightmate.onrender.com/callback"
 )
 # ------------------------------------------------------------------
 
@@ -60,7 +61,7 @@ def login_google():
 
 @app.route("/callback")
 def callback():
-
+    print(session)
     if session.get("user_id") is not None:
         return redirect("/")
 
