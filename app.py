@@ -20,7 +20,7 @@ import google.auth.transport.requests
 # ----------------------|google login config|----------------------
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # wyłącza korzystanie z https
 
-GOOGLE_CLIENT_ID = "66996249863-b58mhavhlclpprmu5lga1qj6qdt6g8fd.apps.googleusercontent.com"
+GOOGLE_CLIENT_ID = "831052157195-g6t6g449gue6c50c2032flbjvjir8t47.apps.googleusercontent.com"
 client_secrets_file = os.path.join(
     pathlib.Path(__file__).parent, "client_secret.json")
 
