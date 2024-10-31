@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, session, flash, abort
+from flask import Flask, render_template, redirect, request, session, flash, abort, jsonify
 from cs50 import SQL
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_session import Session
@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 
 import os
 import pathlib
-
+import re
 import requests
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
@@ -38,7 +38,12 @@ flow = Flow.from_client_secrets_file(
 #   "client_id": "EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM",
 #   "client_secret": "EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM" })
 
+
 app = Flask(__name__)
+
+
+
+
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
@@ -47,6 +52,20 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 # user database
 udb = SQL("sqlite:///users.db")
+
+#XSS
+app.jinja_env.autoescape = False
+
+LEGAL_CHARACTERS = re.compile(r'^[a-zA-Z0-9\s.,!?\'"-]+$')
+
+def validate_input(input_text, template_path):
+   
+    if LEGAL_CHARACTERS.match(input_text):
+        return input_text
+    else:
+        err_message = "Input contains illegal characters. Allowed characters are alphanumeric, .,!?'-\""
+        # Render the specified template with an error message if validation fails
+        return render_template(template_path, err=err_message)
 
 
 @app.route("/login_google")
@@ -228,6 +247,7 @@ def register():
         elif request.form.get("password") != request.form.get("confirmation"):
             return render_template("register.html")
         uname = request.form.get("username")
+        validate_input(uname, "register.html")
         rows = udb.execute("SELECT * FROM users WHERE username = ?", uname)
         if len(rows) != 0:
             return render_template("register.html", uname=uname)
@@ -238,18 +258,22 @@ def register():
         id = udb.execute("SELECT id FROM users WHERE (username = ?)", uname)
         prem = udb.execute(
             "SELECT premium FROM users WHERE (username = ?)", uname)
+
+        admin = udb.execute(
+            "SELECT admin FROM users WHERE (username = ?)", uname)
         session["user_age"] = None
         session["email"] = None
         session["user_id"] = id[0]["id"]
         print(id)
         session["premium"] = prem[0]["premium"]
+        session["admin"] = admin[0]["admin"]
         print(session)
         return redirect("/")
 
     else:
         return render_template("register.html")
 
-
+#SQL INJECTION
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if session.get("user_id") is not None:
@@ -260,6 +284,8 @@ def login():
             return render_template("login.html")
         elif not request.form.get("password"):
             return render_template("login.html")
+            
+        validate_input(request.form.get("username"), "login.html")
 
         rows = udb.execute(
             "SELECT * FROM users WHERE username = ?", request.form.get("username"))
@@ -273,6 +299,8 @@ def login():
         session["age"] = rows[0]["age"]
         session["email"] = None
         session["premium"] = rows[0]["premium"]
+        session["admin"] = rows[0]["admin"]
+        print(session)
 
         return redirect("/")
     else:
@@ -646,6 +674,7 @@ def food():
 @app.route("/foodadd", methods=["GET", "POST"])
 @login_required
 @startform_required
+#Improper Access Control
 @premium_required
 def foodadd():
     if request.method == "GET":
@@ -705,5 +734,18 @@ def update_payment():
                 session["user_id"])
     return redirect("/")
 
+#Improper Access Control
+#Insecure direct object references (IDOR)
+@app.route("/admin", methods=["GET"])
+@login_required
+def admin():
+    # print("test1")
+    x = udb.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
+    data = udb.execute("SELECT * FROM users")
+    if x[0]["admin"] == True:
+        # print("tes2")
+        return render_template("admin.html", data=data)
+    return redirect("/")
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

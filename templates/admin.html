@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Admin
+{% endblock %}
+
+{% block main %}
+<div class="admin" style="text-align:center;">
+    <h2>User Data</h2>
+    <table border="1" style="width: 100%; text-align: center;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Hash</th>
+                <th>Height</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Activity Level</th>
+                <th>TDEE</th>
+                <th>Rate</th>
+                <th>BMR</th>
+                <th>Goal</th>
+                <th>Premium</th>
+                <th>Admin</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in data %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username or 'N/A' }}</td>
+                <td>{{ user.hash or 'N/A' }}</td>
+                <td>{{ user.height or 'N/A' }}</td>
+                <td>{{ user.age or 'N/A' }}</td>
+                <td>{{ user.gender or 'N/A' }}</td>
+                <td>{{ user.activity or 'N/A' }}</td>
+                <td>{{ user.tdee or 'N/A' }}</td>
+                <td>{{ user.rate or 'N/A' }}</td>
+                <td>{{ user.bmr or 'N/A' }}</td>
+                <td>{{ user.goal or 'N/A' }}</td>
+                <td>{{ 'Yes' if user.premium else 'No' }}</td>
+                <td>{{ 'Yes' if user.admin else 'No' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

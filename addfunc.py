@@ -3,6 +3,7 @@ from functools import wraps
 import secrets
 import string
 
+
 #Ensures that user is logged, otherwise redirect to login page
 def login_required(f):
     @wraps(f)
@@ -34,3 +35,4 @@ def password_gen():
     password = ''.join(secrets.choice(alphabet) for i in range(password_length))
     
     return(password)
+
